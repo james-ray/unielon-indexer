@@ -1,0 +1,16 @@
+{
+  "server": {
+    "port": ":8089",
+    "from_block": 700000
+  },
+  "sqlite": {
+    "database": "data/unielon-indexer.db"
+  },
+  "chain": {
+    "chain_name": "hc",
+    "rpc": "8.210.235.169:14009",
+    "user_name": "admin",
+    "pass_word": "123"
+  },
+  "debug_level": 4
+}
