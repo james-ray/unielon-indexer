@@ -8,6 +8,7 @@ replace github.com/HcashOrg/hrpcclient v0.0.0-20190829070037-0f540456a857 => ./p
 
 require (
 	github.com/HcashOrg/hcd v0.0.0-20210112094503-27c7ab1227b7
+	github.com/HcashOrg/hcrpcclient v0.0.0-20190829070037-0f540456a857
 	github.com/btcsuite/btclog v0.0.0-20170628155309-84c8d2346e9f
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dogecoinw/doged v1.0.6
