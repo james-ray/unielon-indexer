@@ -4,10 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/HcashOrg/hcd/chaincfg/chainhash"
-	rpcclient "github.com/HcashOrg/hcrpcclient"
 	"github.com/dogecoinw/go-dogecoin/log"
 	"github.com/james-ray/unielon-indexer/config"
+	rpcclient "github.com/james-ray/unielon-indexer/package/github.com/HcashOrg/hcrpcclient"
 	"github.com/james-ray/unielon-indexer/storage"
 	"github.com/james-ray/unielon-indexer/verifys"
 	"sync"
@@ -101,23 +100,23 @@ func (e *Explorer) scan() error {
 			return fmt.Errorf("scan GetBlockHash err: %s", err.Error())
 		}
 
-		block, err := e.node.GetBlockVerbose(blockHash, true)
+		block, err := e.node.GetBlock(blockHash)
 		if err != nil {
 			return fmt.Errorf("scan GetBlockVerboseBool err: %s", err.Error())
 		}
 
-		for _, tx := range block.Tx {
-
-			txhash, _ := chainhash.NewHashFromStr(tx)
-			transactionVerbose, err := e.node.GetRawTransactionVerbose(txhash)
+		for _, tx := range block.Transactions {
+			txHash := tx.TxHash()
+			fmt.Printf("handle tx %s \n", txHash.String())
+			transactionVerbose, err := e.node.GetRawTransactionVerbose(&txHash)
 			if err != nil {
 				log.Error("scanning", "GetRawTransactionVerboseBool", err, "txhash", transactionVerbose.Txid)
 				return err
 			}
 
-			decode, pushedData, err := e.reDecode(transactionVerbose)
+			decode, pushedData, err := e.reDecode1(tx)
 			if err != nil {
-				log.Trace("scanning", "verifyReDecode", err, "txhash", transactionVerbose.Txid)
+				log.Trace("scanning", "verifyReDecode", err, "txhash", tx.TxHash())
 				continue
 			}
 

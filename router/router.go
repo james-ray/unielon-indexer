@@ -1,8 +1,8 @@
 package router
 
 import (
-	rpcclient "github.com/HcashOrg/hcrpcclient"
 	"github.com/gin-gonic/gin"
+	rpcclient "github.com/james-ray/unielon-indexer/package/github.com/HcashOrg/hcrpcclient"
 	"github.com/james-ray/unielon-indexer/storage"
 	"github.com/james-ray/unielon-indexer/utils"
 	"github.com/james-ray/unielon-indexer/verifys"

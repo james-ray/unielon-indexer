@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	rpcclient "github.com/HcashOrg/hcrpcclient"
 	"github.com/dogecoinw/go-dogecoin/log"
 	"github.com/gin-gonic/gin"
 	"github.com/james-ray/unielon-indexer/config"
 	"github.com/james-ray/unielon-indexer/explorer"
+	rpcclient "github.com/james-ray/unielon-indexer/package/github.com/HcashOrg/hcrpcclient"
 	"github.com/james-ray/unielon-indexer/router"
 	"github.com/james-ray/unielon-indexer/storage"
 	_ "net/http/pprof"
