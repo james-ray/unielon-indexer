@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS cardinals_info;
 DROP TABLE IF EXISTS drc20_info;
 DROP TABLE IF EXISTS swap_info;
 DROP TABLE IF EXISTS swap_liquidity;
+DROP TABLE IF EXISTS drc20_address_info;
 
 CREATE TABLE block
 (
@@ -119,6 +120,7 @@ CREATE TABLE IF NOT EXISTS drc20_info
 (
     255
 ) NOT NULL,
+    amt_sum         VARCHAR(255) NOT NULL,
     create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     update_date TIMESTAMP
     );
@@ -156,9 +158,22 @@ CREATE TABLE swap_liquidity
     holder_address   VARCHAR(255),
     reserves_address VARCHAR(255),
     liquidity_total  VARCHAR(255),
-    create_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    create_date      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_date      TIMESTAMP
 );
+
+CREATE TABLE drc20_address_info
+(
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    tick            VARCHAR(255) NOT NULL,
+    receive_address VARCHAR(255) NOT NULL,
+    create_date     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_date     TIMESTAMP,
+    FOREIGN KEY (tick) REFERENCES drc20_info (tick),
+    UNIQUE (tick, receive_address)
+);
+
+CREATE INDEX idx_tick ON drc20_address_info (tick);
 
 DROP TRIGGER IF EXISTS update_block;
 DROP TRIGGER IF EXISTS update_cardinals_revert;
@@ -166,39 +181,53 @@ DROP TRIGGER IF EXISTS update_cardinals_info;
 DROP TRIGGER IF EXISTS update_drc20_info;
 DROP TRIGGER IF EXISTS update_swap_info;
 DROP TRIGGER IF EXISTS update_swap_liquidity;
+DROP TRIGGER IF EXISTS drc20_address_info;
 
 CREATE TRIGGER update_block
-    AFTER UPDATE ON block
+    AFTER UPDATE
+    ON block
 BEGIN
     UPDATE block SET update_date = CURRENT_TIMESTAMP WHERE block_hash = NEW.block_hash;
 END;
 
 CREATE TRIGGER update_cardinals_revert
-    AFTER UPDATE ON cardinals_revert
+    AFTER UPDATE
+    ON cardinals_revert
 BEGIN
     UPDATE cardinals_revert SET update_date = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
 
 CREATE TRIGGER update_cardinals_info
-    AFTER UPDATE ON cardinals_info
+    AFTER UPDATE
+    ON cardinals_info
 BEGIN
     UPDATE cardinals_info SET update_date = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
 
 CREATE TRIGGER update_drc20_info
-    AFTER UPDATE ON drc20_info
+    AFTER UPDATE
+    ON drc20_info
 BEGIN
     UPDATE drc20_info SET update_date = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
 
 CREATE TRIGGER update_swap_info
-    AFTER UPDATE ON swap_info
+    AFTER UPDATE
+    ON swap_info
 BEGIN
     UPDATE swap_info SET update_date = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
 
 CREATE TRIGGER update_swap_liquidity
-    AFTER UPDATE ON swap_liquidity
+    AFTER UPDATE
+    ON swap_liquidity
 BEGIN
     UPDATE swap_liquidity SET update_date = CURRENT_TIMESTAMP WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER update_drc20_address_info
+    AFTER UPDATE
+    ON drc20_address_info
+BEGIN
+    UPDATE drc20_address_info SET update_date = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;

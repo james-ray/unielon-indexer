@@ -10,8 +10,8 @@ import (
 )
 
 func (c *DBClient) InstallCardinalsInfo(card *utils.Cardinals) error {
-	query := "INSERT INTO cardinals_info (order_id, p, op, tick, amt, max_, lim_, dec_, burn_, func_, receive_address, fee_address, to_address, drc20_tx_hash, repeat_mint) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-	_, err := c.SqlDB.Exec(query, card.OrderId, card.P, card.Op, card.Tick, card.Amt.String(), card.Max.String(), card.Lim.String(), card.Dec, card.Burn, card.Func, card.ReceiveAddress, card.FeeAddress, card.ToAddress, card.Drc20TxHash, card.Repeat)
+	query := "INSERT INTO cardinals_info (order_id, p, op, tick, amt, max_, lim_, dec_, burn_, func_, receive_address, fee_address, to_address, drc20_tx_hash, block_hash, block_number, repeat_mint) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+	_, err := c.SqlDB.Exec(query, card.OrderId, card.P, card.Op, card.Tick, card.Amt.String(), card.Max.String(), card.Lim.String(), card.Dec, card.Burn, card.Func, card.ReceiveAddress, card.FeeAddress, card.ToAddress, card.Drc20TxHash, card.BlockHash, card.BlockNumber, card.Repeat)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -20,7 +20,7 @@ func (c *DBClient) InstallCardinalsInfo(card *utils.Cardinals) error {
 }
 
 func (c *DBClient) InstallDrc20(tx *sql.Tx, max, lim *big.Int, tick, receive_address, drc20_tx_hash string) error {
-	query := "INSERT INTO drc20_info (tick, `max_`, lim_, receive_address, drc20_tx_hash) VALUES (?, ?, ?, ?, ?)"
+	query := "INSERT INTO drc20_info (tick, `max_`, lim_, receive_address, drc20_tx_hash, amt_sum) VALUES (?, ?, ?, ?, ?, '0')"
 	_, err := tx.Exec(query, tick, max.String(), lim.String(), receive_address, drc20_tx_hash)
 	if err != nil {
 		return err

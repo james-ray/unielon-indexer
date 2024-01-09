@@ -233,34 +233,34 @@ func (e *Explorer) scan() error {
 				card, err := e.drc20Decode(transactionVerbose, pushedData, e.fromBlock)
 				if err != nil {
 					log.Error("scanning", "drc20Decode", err, "txhash", transactionVerbose.Txid)
-
+					continue
 				}
 
 				err = e.verify.VerifyDrc20(card)
 				if err != nil {
 					log.Error("scanning", "VerifyDrc20", err, "txhash", transactionVerbose.Txid)
 					e.dbc.UpdateCardinalsInfoNewErrInfo(card.OrderId, err.Error())
-
+					continue
 				}
 
 				err = e.deployOrMintOrTransfer(card)
 				if err != nil {
 					log.Error("scanning", "deployOrMintOrTransfer", err, "txhash", transactionVerbose.Txid)
 					e.dbc.UpdateCardinalsInfoNewErrInfo(card.OrderId, err.Error())
-
+					continue
 				}
 			} else if decode.P == "pair-v1" {
 				swap, err := e.swapDecode(transactionVerbose, pushedData, e.fromBlock)
 				if err != nil {
 					log.Error("scanning", "swapDecode", err, "txhash", transactionVerbose.Txid)
-
+					continue
 				}
 
 				err = e.verify.VerifySwap(swap)
 				if err != nil {
 					log.Error("scanning", "VerifySwap", err, "txhash", transactionVerbose.Txid)
 					e.dbc.UpdateSwapInfoErr(swap.OrderId, err.Error())
-
+					continue
 				}
 
 				if swap.Op == "create" || swap.Op == "add" {
@@ -268,7 +268,7 @@ func (e *Explorer) scan() error {
 					if err != nil {
 						log.Error("scanning", "swapCreateOrAdd", err, "txhash", transactionVerbose.Txid)
 						e.dbc.UpdateSwapInfoErr(swap.OrderId, err.Error())
-
+						continue
 					}
 				}
 
@@ -277,7 +277,7 @@ func (e *Explorer) scan() error {
 					if err != nil {
 						log.Error("scanning", "swapRemove", err, "txhash", transactionVerbose.Txid)
 						e.dbc.UpdateSwapInfoErr(swap.OrderId, err.Error())
-
+						continue
 					}
 				}
 
@@ -285,7 +285,7 @@ func (e *Explorer) scan() error {
 					if err = e.swapNow(swap); err != nil {
 						log.Error("scanning", "swapNow", err, "txhash", transactionVerbose.Txid)
 						e.dbc.UpdateSwapInfoErr(swap.OrderId, err.Error())
-
+						continue
 					}
 				}
 
@@ -300,14 +300,14 @@ func (e *Explorer) scan() error {
 				if err != nil {
 					log.Error("scanning", "VerifyWDoge", err, "txhash", transactionVerbose.Txid)
 					e.dbc.UpdateWDogeInfoErr(wdoge.OrderId, err.Error())
-
+					continue
 				}
 
 				if wdoge.Op == "deposit" {
 					if err = e.dogeDeposit(wdoge); err != nil {
 						log.Error("scanning", "dogeDeposit", err.Error(), "txhash", transactionVerbose.Txid)
 						e.dbc.UpdateWDogeInfoErr(wdoge.OrderId, err.Error())
-
+						continue
 					}
 				}
 
@@ -315,7 +315,7 @@ func (e *Explorer) scan() error {
 					if err = e.dogeWithdraw(wdoge); err != nil {
 						log.Error("scanning", "dogeWithdraw", err.Error(), "txhash", transactionVerbose.Txid)
 						e.dbc.UpdateWDogeInfoErr(wdoge.OrderId, err.Error())
-
+						continue
 					}
 				}
 			}
