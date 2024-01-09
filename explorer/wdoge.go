@@ -3,11 +3,12 @@ package explorer
 import (
 	"encoding/json"
 	"fmt"
+	"math/big"
+
 	"github.com/HcashOrg/hcd/chaincfg/chainhash"
 	"github.com/HcashOrg/hcd/hcjson"
 	"github.com/google/uuid"
 	"github.com/james-ray/unielon-indexer/utils"
-	"math/big"
 )
 
 func (e Explorer) wdogeDecode(tx *hcjson.TxRawResult, pushedData []byte, number int64) (*utils.WDogeInfo, error) {

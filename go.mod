@@ -2,12 +2,13 @@ module github.com/james-ray/unielon-indexer
 
 go 1.20
 
-replace github.com/HcashOrg/hcd  => ./package/github.com/HcashOrg/hcd
+replace github.com/HcashOrg/hcd => ./package/github.com/HcashOrg/hcd
 
 //replace github.com/HcashOrg/hrpcclient => ./package/github.com/HcashOrg/hrpcclient
 
 require (
 	github.com/HcashOrg/hcd v0.0.0-20210112094503-27c7ab1227b7
+	github.com/HcashOrg/hcrpcclient v0.0.0-20190829070037-0f540456a857
 	github.com/btcsuite/btclog v0.0.0-20170628155309-84c8d2346e9f
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dogecoinw/doged v1.0.6
@@ -19,6 +20,7 @@ require (
 
 require (
 	github.com/HcashOrg/bliss v0.0.0-20180719035130-f5d53c2a9b7d // indirect
+	github.com/btcsuite/snappy-go v1.0.0 // indirect
 	github.com/dchest/blake256 v1.1.0 // indirect
 )
 

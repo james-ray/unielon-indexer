@@ -7,8 +7,8 @@ import (
 	"fmt"
 
 	"github.com/HcashOrg/hcd/hcjson"
+	"github.com/HcashOrg/hcd/txscript"
 	"github.com/HcashOrg/hcd/wire"
-	"github.com/james-ray/unielon-indexer/package/github.com/HcashOrg/hcd/txscript"
 	"github.com/james-ray/unielon-indexer/utils"
 )
 

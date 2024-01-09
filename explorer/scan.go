@@ -70,7 +70,7 @@ out:
 	for {
 		select {
 		case <-startTicker.C:
-			if err := e.scanTxHash("812f52cb15cf4c395647a153680073085e3b12c02649c7fd2622860f2883e622"); err != nil {
+			if err := e.scan(); err != nil {
 				log.Error("explorer", "Start", err.Error())
 			}
 		case <-e.ctx.Done():
@@ -226,7 +226,7 @@ func (e *Explorer) scan() error {
 			decode, pushedData, err := e.reDecode1(tx)
 			if err != nil {
 				log.Trace("scanning", "verifyReDecode", err, "txhash", tx.TxHash())
-
+				continue
 			}
 
 			if decode.P == "drc-20" {
