@@ -3,6 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	_ "net/http/pprof"
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
+
 	"github.com/dogecoinw/go-dogecoin/log"
 	"github.com/gin-gonic/gin"
 	"github.com/james-ray/unielon-indexer/config"
@@ -10,14 +16,10 @@ import (
 	rpcclient "github.com/james-ray/unielon-indexer/package/github.com/HcashOrg/hcrpcclient"
 	"github.com/james-ray/unielon-indexer/router"
 	"github.com/james-ray/unielon-indexer/storage"
-	_ "net/http/pprof"
-	"os"
-	"os/signal"
-	"sync"
-	"syscall"
 )
 
 const (
+	// feeAddress = "D92uJjQ9eHUcv2GjJUgp6m58V8wYvGV2g9"
 	feeAddress = "Hsao5VNXao7DZwDBHdkLwfN7dL8tEsTxkUX"
 )
 
@@ -43,7 +45,7 @@ func main() {
 
 	connCfg := &rpcclient.ConnConfig{
 		Host: cfg.Chain.Rpc,
-		//Endpoint:     "ws",
+		// Endpoint:     "ws",
 		User:         cfg.Chain.UserName,
 		Pass:         cfg.Chain.PassWord,
 		HTTPPostMode: true,  // Bitcoin core only supports HTTP POST mode

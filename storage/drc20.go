@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/james-ray/unielon-indexer/utils"
+	_ "github.com/mattn/go-sqlite3"
 	"math/big"
 )
 

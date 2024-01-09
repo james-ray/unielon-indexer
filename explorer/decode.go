@@ -5,12 +5,30 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/HcashOrg/hcd/hcjson"
-	"github.com/HcashOrg/hcd/txscript"
 	"github.com/HcashOrg/hcd/wire"
+	"github.com/james-ray/unielon-indexer/package/github.com/HcashOrg/hcd/txscript"
 	"github.com/james-ray/unielon-indexer/utils"
 )
 
+func PushedData(script []byte) ([][]byte, error) {
+	const scriptVersion = 0
+
+	var data [][]byte
+	tokenizer := txscript.MakeScriptTokenizer(scriptVersion, script)
+	for tokenizer.Next() {
+		if tokenizer.Data() != nil {
+			data = append(data, tokenizer.Data())
+		} else if tokenizer.Opcode() == txscript.OP_0 {
+			data = append(data, nil)
+		}
+	}
+	if err := tokenizer.Err(); err != nil {
+		return nil, err
+	}
+	return data, nil
+}
 func (e *Explorer) reDecode(tx *hcjson.TxRawResult) (*utils.BaseParams, []byte, error) {
 
 	in := tx.Vin[0]
@@ -24,16 +42,16 @@ func (e *Explorer) reDecode(tx *hcjson.TxRawResult) (*utils.BaseParams, []byte, 
 		return nil, nil, fmt.Errorf("hex.DecodeString err: %s", err.Error())
 	}
 
-	pkScript, err := txscript.PushedData(scriptbytes)
+	pkScript, err := PushedData(scriptbytes)
 	if err != nil {
 		return nil, nil, fmt.Errorf("PushedData err: %s", err.Error())
 	}
 
-	if len(pkScript) < 3 {
+	if len(pkScript) < 2 {
 		return nil, nil, errors.New("pkScript length < 3")
 	}
 
-	pushedData, err := txscript.PushedData(pkScript[2])
+	pushedData, err := PushedData(pkScript[1])
 	if err != nil {
 		return nil, nil, fmt.Errorf("PushedData err: %s", err.Error())
 	}
@@ -67,7 +85,7 @@ func (e *Explorer) reDecode1(tx *wire.MsgTx) (*utils.BaseParams, []byte, error) 
 
 	scriptbytes := in.SignatureScript
 
-	pkScript, err := txscript.PushedData(scriptbytes)
+	pkScript, err := PushedData(scriptbytes)
 	if err != nil {
 		return nil, nil, fmt.Errorf("PushedData err: %s", err.Error())
 	}
@@ -76,7 +94,7 @@ func (e *Explorer) reDecode1(tx *wire.MsgTx) (*utils.BaseParams, []byte, error) 
 		return nil, nil, errors.New("pkScript length < 2")
 	}
 
-	pushedData, err := txscript.PushedData(pkScript[1])
+	pushedData, err := PushedData(pkScript[1])
 	if err != nil {
 		return nil, nil, fmt.Errorf("PushedData err: %s", err.Error())
 	}

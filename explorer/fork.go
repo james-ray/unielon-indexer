@@ -3,6 +3,7 @@ package explorer
 import (
 	"errors"
 	"fmt"
+
 	"github.com/dogecoinw/go-dogecoin/log"
 )
 

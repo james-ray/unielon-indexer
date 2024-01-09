@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/dogecoinw/go-dogecoin/log"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/james-ray/unielon-indexer/utils"
+	_ "github.com/mattn/go-sqlite3"
 	"math/big"
 	"sync"
 )
